@@ -11,11 +11,14 @@ function App() {
         <div className="circle">4</div>
       </div>
 
-      <div className="btn" id="prev">
-        Prev
-      </div>
-      <div className="btn" id="next">
-        Next
+      <div className="btn-container">
+        <button className="btn" id="prev">
+          Prev
+        </button>
+
+        <button className="btn" id="next">
+          Next
+        </button>
       </div>
     </div>
   );
