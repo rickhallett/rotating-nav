@@ -30,7 +30,7 @@
 }
 
 .progress-bar {
-  background-color: lightblue;
+  background-color: rgb(131, 186, 204);
   border-radius: 5px;
   height: 4px;
   width: 0%;
@@ -43,7 +43,7 @@
 }
 
 .circle {
-  border: solid lightgrey 2px;
+  border: solid rgb(203, 205, 206) 2px;
   border-radius: 50%;
   width: 30px;
   height: 30px;
@@ -54,7 +54,7 @@
 }
 
 .circle.active {
-  border: solid lightblue 2px;
+  border: solid rgb(131, 186, 204) 2px;
 }
 
 .btn-container {
@@ -72,10 +72,15 @@
   color: white;
 }
 
+.btn--green {
+  background-color: rgb(193, 235, 193);
+}
+
 .btn:active {
   transform: scale(98%);
 }
 
 .btn:disabled {
   cursor: not-allowed;
+  background-color: lightgrey;
 }

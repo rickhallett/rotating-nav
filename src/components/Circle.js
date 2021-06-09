@@ -1,5 +1,5 @@
-export const Circle = ({ props }) => {
+export const Circle = ({ active, i }) => {
   return (
-    <div className={`circle ${props.active ? "active" : null}`}>{props.id}</div>
+    <div className={`circle ${active ? "active" : null}`}>{i}</div>
   );
 };

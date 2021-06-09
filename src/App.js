@@ -5,59 +5,51 @@ import { Circle } from "./components/Circle";
 class App extends React.Component {
   constructor() {
     super();
-    this.state = {
-      circles: [
-        { active: true },
-        { active: false },
-        { active: false },
-        { active: false },
-      ],
-      prevButtonDisabled: true,
-      nextButtonDisabled: false,
-    };
-    this.progressWidth = 80;
+    this.state = { activeCircle: 0, circles: 4 };
   }
 
+  logState = () => {
+    console.log({ state: this.state.activeCircle });
+  };
+
   prevHandler = () => {
-    const idxOfActiveCircles = this.state.circles.findIndex((c) => c.active);
-    console.log({ idxOfActiveCircles });
-    if (idxOfActiveCircles === 0) {
-      this.setState({ prevButtonEnabled: false }, () => {
-        console.log({ state: this.state });
-      });
-      return;
-    }
-
-    this.setState({ prevButtonEnabled: true });
-
-    const resetActiveCircles = this.state.circles
-      .slice()
-      .map((c, i) =>
-        i === idxOfActiveCircles ? (c.active = true) : (c.active = false)
-      );
-
-    this.setState({ circles: resetActiveCircles });
+    this.changeActiveCircle(-1);
   };
 
   nextHandler = () => {
-    const idxOfActiveCircles = this.state.circles.findIndex((c) => c.active);
-    console.log({ idxOfActiveCircles });
-    if (idxOfActiveCircles === 3) {
-      this.setState({ nextButtonEnabled: false }, () =>
-        console.log({ state: this.state })
-      );
-      return;
-    }
+    this.changeActiveCircle(1);
+  };
 
-    this.setState({ nextButtonEnabled: true });
+  changeActiveCircle(dir) {
+    const saneModulus = (a, b) => ((a % b) + b) % b;
 
-    const resetActiveCircles = this.state.circles
-      .slice()
-      .map((c, i) =>
-        i === idxOfActiveCircles ? (c.active = true) : (c.active = false)
-      );
+    this.setState(
+      (prevState) => {
+        const newActiveCircle = saneModulus(
+          prevState.activeCircle + dir,
+          this.state.circles
+        );
 
-    this.setState({ circles: resetActiveCircles });
+        console.log({ newActiveCircle });
+
+        const abs = Math.abs(
+          saneModulus(prevState.activeCircle + dir, this.state.circles)
+        );
+
+        console.log({ abs });
+
+        return {
+          activeCircle: Math.abs(
+            saneModulus(prevState.activeCircle + dir, this.state.circles)
+          ),
+        };
+      },
+      () => this.logState()
+    );
+  }
+
+  getProgressWidth = () => {
+    return (this.state.activeCircle / (this.state.circles - 1)) * 100;
   };
 
   componentDidUpdate = () => {
@@ -72,10 +64,16 @@ class App extends React.Component {
         <div className="progress-container">
           <div
             className="progress-bar"
-            style={{ width: `${this.progressWidth}%` }}
+            style={{ width: `${this.getProgressWidth()}%` }}
           ></div>
-          {this.state.circles.map((c, i) => {
-            return <Circle key={i} props={c} />;
+          {[0, 1, 2, 3].map((c, i) => {
+            return (
+              <Circle
+                key={i}
+                active={i === this.state.activeCircle}
+                i={i + 1}
+              />
+            );
           })}
         </div>
 
@@ -83,7 +81,7 @@ class App extends React.Component {
           <button
             className="btn"
             id="prev"
-            disabled={this.state.prevButtonEnabled}
+            disabled={this.state.activeCircle < 1}
             onClick={this.prevHandler}
           >
             Prev
@@ -92,10 +90,18 @@ class App extends React.Component {
           <button
             className="btn"
             id="next"
-            disabled={this.state.nextButtonEnabled}
+            disabled={this.state.activeCircle > 2}
             onClick={this.nextHandler}
           >
             Next
+          </button>
+
+          <button
+            className="btn btn--green"
+            id="next"
+            onClick={this.nextHandler}
+          >
+            Loop + 1
           </button>
         </div>
       </div>
