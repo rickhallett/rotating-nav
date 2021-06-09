@@ -43,7 +43,7 @@
 }
 
 .circle {
-  border: solid lightblue 2px;
+  border: solid lightgrey 2px;
   border-radius: 50%;
   width: 30px;
   height: 30px;
@@ -51,6 +51,10 @@
   justify-content: center;
   align-items: center;
   background-color: white;
+}
+
+.circle.active {
+  border: solid lightblue 2px;
 }
 
 .btn-container {
@@ -70,4 +74,8 @@
 
 .btn:active {
   transform: scale(98%);
+}
+
+.btn:disabled {
+  cursor: not-allowed;
 }
